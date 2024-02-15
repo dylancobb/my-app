@@ -1,26 +1,44 @@
-<script>
-    import Button from "$lib/Button.svelte";
-    const addItem = () => {};
+<script lang="ts">
+	import Input from '$lib/Input.svelte';
+	import Button from '$lib/Button.svelte';
+
+	let value: string;
+	const addItem = (todo: string) => {
+		const id = (todos.length + 1).toString();
+		if(id) {
+		todos = [...todos, { id, todo }]
+		}
+	};
+	$: todos = [
+		{ id: '1', todo: 'brush my teeth' },
+		{ id: '2', todo: 'wash my hair' },
+		{ id: '3', todo: 'comb my cat' }
+	];
 </script>
 
 <div class="flex flex-col justify-center items-center">
-    <h1 class="text-4xl font-bold py-10">
-        Sveltekit + AWS Todo-List App
-    </h1>
+	<h1 class="text-4xl font-bold py-10">Sveltekit + AWS Todo-List App</h1>
 
-    <div class="w-full max-w-lg justify-center">
-        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <div class="flex gap-1 mb-4">
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Shit to do">
-                <Button onClick={addItem}>Add</Button>
-            </div>
-        </form>
-    </div>
-
+	<div class="bg-white shadow-md rounded w-full max-w-lg px-8 pt-6 pb-4 justify-center">
+		<form class="mb-4">
+			<div class="flex gap-1 mb-4">
+				<Input bind:value={value} id="input" placeholder="Shit to do"/>
+				<Button onClick={() => addItem(value)}>Add</Button>
+			</div>
+		</form>
+		<ul>
+			{#each todos as { id, todo }, i}
+				<li>
+					{id}
+					{todo}
+				</li>
+			{/each}
+		</ul>
+	</div>
 </div>
 
 <style lang="postcss">
-    :global(html) {
-        background-color: theme(colors.gray.100);
-    }
+	:global(html) {
+		background-color: theme(colors.gray.100);
+	}
 </style>
